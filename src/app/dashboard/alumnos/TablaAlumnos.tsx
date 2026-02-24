@@ -79,6 +79,16 @@ export default function TablaAlumnos({ alumnos }: { alumnos: Alumno[] }) {
     else alert("Error al eliminar");
   }
 
+  async function handleEstado(id: string, estado: string) {
+    const res = await fetch(`/api/alumnos/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ estado }),
+    });
+    if (res.ok) router.refresh();
+    else alert("Error al actualizar estado");
+  }
+
   function exportToExcel() {
     const data = filtered.map((a) => ({
       Nombre: a.nombre,
@@ -107,20 +117,23 @@ export default function TablaAlumnos({ alumnos }: { alumnos: Alumno[] }) {
     outline: "none",
   };
 
+  function getBadgeStyle(estado: string) {
+    if (estado === "ACTIVO") return { background: "rgba(34,197,94,0.12)", color: "#22c55e" };
+    if (estado === "PENDIENTE") return { background: "rgba(245,166,35,0.12)", color: "#f5a623" };
+    return { background: "rgba(239,68,68,0.12)", color: "#ef4444" };
+  }
+
   return (
     <div>
       {/* Toolbar */}
       <div style={{ padding: "16px 16px 0", display: "flex", gap: 12, flexWrap: "wrap" as const, alignItems: "center", justifyContent: "space-between" }}>
         <div style={{ display: "flex", gap: 12, flexWrap: "wrap" as const, flex: 1 }}>
-          {/* Busqueda */}
           <input
             style={{ ...inputStyle, minWidth: 220 }}
             placeholder="Buscar por nombre, apellido, DNI..."
             value={search}
             onChange={(e) => handleSearchChange(e.target.value)}
           />
-
-          {/* Filtro etapa */}
           <select
             style={{ ...inputStyle, cursor: "pointer" }}
             value={etapaFiltro}
@@ -130,20 +143,17 @@ export default function TablaAlumnos({ alumnos }: { alumnos: Alumno[] }) {
               <option key={e} value={e}>{e}</option>
             ))}
           </select>
-
-          {/* Filtro estado */}
           <select
             style={{ ...inputStyle, cursor: "pointer" }}
             value={estadoFiltro}
             onChange={(e) => handleEstadoChange(e.target.value)}
           >
             <option value="TODOS">Todos los estados</option>
+            <option value="PENDIENTE">Pendiente</option>
             <option value="ACTIVO">Activo</option>
             <option value="INACTIVO">Inactivo</option>
           </select>
         </div>
-
-        {/* Exportar */}
         <button
           onClick={exportToExcel}
           style={{ padding: "8px 16px", background: "rgba(34,197,94,0.12)", border: "1px solid rgba(34,197,94,0.2)", borderRadius: 8, color: "#22c55e", fontSize: 13, fontWeight: 600, cursor: "pointer" }}
@@ -152,13 +162,11 @@ export default function TablaAlumnos({ alumnos }: { alumnos: Alumno[] }) {
         </button>
       </div>
 
-      {/* Resultados */}
       <div style={{ padding: "8px 16px", fontSize: 12, color: "#5c5b6e" }}>
         {filtered.length} resultado{filtered.length !== 1 ? "s" : ""}
         {search || etapaFiltro !== "Todas" || estadoFiltro !== "TODOS" ? " (filtrado)" : ""}
       </div>
 
-      {/* Tabla */}
       {paginated.length === 0 ? (
         <div style={{ padding: "48px 32px", textAlign: "center", color: "#888" }}>
           No se encontraron alumnos
@@ -177,7 +185,7 @@ export default function TablaAlumnos({ alumnos }: { alumnos: Alumno[] }) {
             </thead>
             <tbody>
               {paginated.map((a) => (
-                <tr key={a.id} style={{ transition: "background 0.1s" }}>
+                <tr key={a.id}>
                   <td style={{ padding: "12px 16px", borderBottom: "1px solid #2e2e38", color: "#f0eff4", fontWeight: 600 }}>{a.nombre}</td>
                   <td style={{ padding: "12px 16px", borderBottom: "1px solid #2e2e38", color: "#9b9aaa" }}>{a.apellido}</td>
                   <td style={{ padding: "12px 16px", borderBottom: "1px solid #2e2e38", color: "#9b9aaa" }}>{a.dni}</td>
@@ -186,12 +194,28 @@ export default function TablaAlumnos({ alumnos }: { alumnos: Alumno[] }) {
                   <td style={{ padding: "12px 16px", borderBottom: "1px solid #2e2e38", color: "#9b9aaa" }}>{a.telefono}</td>
                   <td style={{ padding: "12px 16px", borderBottom: "1px solid #2e2e38", color: "#9b9aaa" }}>{a.curso}</td>
                   <td style={{ padding: "12px 16px", borderBottom: "1px solid #2e2e38" }}>
-                    <span style={{ padding: "2px 10px", borderRadius: 99, fontSize: 12, fontWeight: 600, background: a.estado === "ACTIVO" ? "rgba(34,197,94,0.12)" : "rgba(239,68,68,0.12)", color: a.estado === "ACTIVO" ? "#22c55e" : "#ef4444" }}>
+                    <span style={{ padding: "2px 10px", borderRadius: 99, fontSize: 12, fontWeight: 600, ...getBadgeStyle(a.estado) }}>
                       {a.estado}
                     </span>
                   </td>
                   <td style={{ padding: "12px 16px", borderBottom: "1px solid #2e2e38" }}>
-                    <div style={{ display: "flex", gap: 8 }}>
+                    <div style={{ display: "flex", gap: 8, flexWrap: "wrap" as const }}>
+                      {a.estado === "PENDIENTE" && (
+                        <>
+                          <button
+                            onClick={() => handleEstado(a.id, "ACTIVO")}
+                            style={{ padding: "5px 12px", borderRadius: 6, border: "1px solid rgba(34,197,94,0.2)", background: "rgba(34,197,94,0.12)", color: "#22c55e", fontSize: 13, cursor: "pointer" }}
+                          >
+                            Aprobar
+                          </button>
+                          <button
+                            onClick={() => handleEstado(a.id, "INACTIVO")}
+                            style={{ padding: "5px 12px", borderRadius: 6, border: "1px solid rgba(239,68,68,0.2)", background: "rgba(239,68,68,0.12)", color: "#ef4444", fontSize: 13, cursor: "pointer" }}
+                          >
+                            Rechazar
+                          </button>
+                        </>
+                      )}
                       <Link href={`/dashboard/alumnos/${a.id}/editar`} style={{ padding: "5px 12px", borderRadius: 6, border: "1px solid #2e2e38", color: "#9b9aaa", textDecoration: "none", fontSize: 13 }}>
                         Editar
                       </Link>
@@ -210,11 +234,10 @@ export default function TablaAlumnos({ alumnos }: { alumnos: Alumno[] }) {
         </div>
       )}
 
-      {/* Paginacion */}
       {totalPages > 1 && (
         <div style={{ padding: "16px", display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: "1px solid #2e2e38" }}>
           <span style={{ fontSize: 13, color: "#5c5b6e" }}>
-            Página {page} de {totalPages}
+            Pagina {page} de {totalPages}
           </span>
           <div style={{ display: "flex", gap: 8 }}>
             <button

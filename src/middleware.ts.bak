@@ -27,4 +27,13 @@ export function middleware(req: NextRequest) {
 
 export const config = {
     matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
+}
+if (
+  pathname.startsWith("/login") ||
+  pathname.startsWith("/inscripcion") ||
+  pathname.startsWith("/api/auth") ||
+  pathname.startsWith("/_next") ||
+  pathname.includes(".")
+) {
+  return NextResponse.next();
 };
