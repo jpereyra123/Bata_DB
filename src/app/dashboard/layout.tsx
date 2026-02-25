@@ -10,6 +10,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     <div style={{ fontSize: 20, fontWeight: 700, color: "#f5a623", padding: "0 12px", marginBottom: 32 }}>EduAdmin</div>
                     <a href="/dashboard" style={{ display: "block", padding: "9px 12px", borderRadius: 8, textDecoration: "none", color: "#9b9aaa", fontSize: 14, marginBottom: 4 }}>Dashboard</a>
                     <a href="/dashboard/alumnos" style={{ display: "block", padding: "9px 12px", borderRadius: 8, textDecoration: "none", color: "#9b9aaa", fontSize: 14 }}>Alumnos</a>
+                    <a href="/dashboard/usuarios" style={{ display: "block", padding: "9px 12px", borderRadius: 8, textDecoration: "none", color: "#9b9aaa", fontSize: 14, marginTop: 4 }}>
+                        Usuarios
+                    </a>
                 </div>
                 <div style={{ marginLeft: 240, flex: 1, display: "flex", flexDirection: "column" }}>
                     <header style={{ height: 60, borderBottom: "1px solid #2e2e38", background: "#18181c", display: "flex", alignItems: "center", justifyContent: "flex-end", padding: "0 28px" }}>

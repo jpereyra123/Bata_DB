@@ -216,8 +216,8 @@ export default function TablaAlumnos({ alumnos }: { alumnos: Alumno[] }) {
                           </button>
                         </>
                       )}
-                      <Link href={`/dashboard/alumnos/${a.id}/editar`} style={{ padding: "5px 12px", borderRadius: 6, border: "1px solid #2e2e38", color: "#9b9aaa", textDecoration: "none", fontSize: 13 }}>
-                        Editar
+                      <Link href={`/dashboard/alumnos/${a.id}`} style={{ padding: "5px 12px", borderRadius: 6, border: "1px solid rgba(245,166,35,0.2)", background: "rgba(245,166,35,0.08)", color: "#f5a623", textDecoration: "none", fontSize: 13 }}>
+                        Ver ficha
                       </Link>
                       <button
                         onClick={() => handleDelete(a.id, a.nombre)}
