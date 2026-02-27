@@ -27,7 +27,7 @@ export function Navbar() {
                 borderRadius: 99,
                 fontWeight: 600,
             }}>
-                {session?.user?.role}
+                {(session?.user as any)?.role}
             </span>
             <button
                 onClick={() => signOut({ callbackUrl: "/login" })}
