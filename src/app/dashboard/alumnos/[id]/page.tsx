@@ -51,8 +51,7 @@ export default async function FichaAlumnoPage({ params }: Props) {
                     </div>
 
                     {/* Acciones */}
-                    <FichaAcciones alumnoId={alumno.id} estado={alumno.estado} />
-                </div>
+                    <FichaAcciones alumnoId={alumno.id} estado={alumno.estado} notas={alumno.notas ?? ""} />                </div>
 
                 {/* Datos */}
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
@@ -65,6 +64,21 @@ export default async function FichaAlumnoPage({ params }: Props) {
                         label="Registrado"
                         value={new Date(alumno.createdAt).toLocaleDateString("es-AR", { day: "2-digit", month: "long", year: "numeric" })}
                     />
+                </div>
+                {/* Datos del tutor */}
+                <div style={{ background: "#18181c", border: "1px solid #2e2e38", borderRadius: 16, padding: 28, marginBottom: 20 }}>
+                    <h2 style={{ fontSize: 15, fontWeight: 700, color: "#f0eff4", marginBottom: 20, paddingBottom: 12, borderBottom: "1px solid #2e2e38" }}>
+                        👨‍👩‍👧 Datos del Padre / Madre / Tutor
+                    </h2>
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+                        <DataField label="Nombre y apellido" value={alumno.tutorNombre || "—"} />
+                        <DataField label="DNI" value={alumno.tutorDni || "—"} />
+                        <DataField label="Relacion" value={alumno.tutorRelacion || "—"} />
+                        <DataField label="Celular" value={alumno.tutorCelular || "—"} />
+                        <DataField label="Direccion" value={alumno.tutorDireccion || "—"} />
+                        <DataField label="Ocupacion" value={alumno.tutorOcupacion || "—"} />
+                        <DataField label="Obra social" value={alumno.tutorObraSocial || "—"} />
+                    </div>
                 </div>
             </div>
 

@@ -38,7 +38,15 @@ model Alumno {
   telefono        String       @default("")
   fechaNacimiento String       @default("")
   curso           String
+  notas           String       @default("")
   estado          EstadoAlumno @default(PENDIENTE)
+  tutorNombre     String       @default("")
+  tutorDni        String       @default("")
+  tutorRelacion   String       @default("")
+  tutorCelular    String       @default("")
+  tutorDireccion  String       @default("")
+  tutorOcupacion  String       @default("")
+  tutorObraSocial String       @default("")
   createdAt       DateTime     @default(now())
   updatedAt       DateTime     @updatedAt
 
