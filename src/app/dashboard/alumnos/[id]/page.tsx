@@ -13,6 +13,7 @@ export default async function FichaAlumnoPage({ params }: Props) {
     const { id } = await params;
     const alumno = await alumnosService.findById(id);
     if (!alumno) notFound();
+    const tutores = await alumnosService.findTutors(id);
 
     function getBadge(estado: string) {
         if (estado === "ACTIVO") return { bg: "rgba(34,197,94,0.12)", color: "#22c55e", label: "Activo" };
@@ -51,7 +52,8 @@ export default async function FichaAlumnoPage({ params }: Props) {
                     </div>
 
                     {/* Acciones */}
-                    <FichaAcciones alumnoId={alumno.id} estado={alumno.estado} notas={alumno.notas ?? ""} />                </div>
+                    <FichaAcciones alumnoId={alumno.id} estado={alumno.estado} notas={alumno.notas ?? ""} />
+                </div>
 
                 {/* Datos */}
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
@@ -59,27 +61,31 @@ export default async function FichaAlumnoPage({ params }: Props) {
                     <DataField label="Fecha de nacimiento" value={alumno.fechaNacimiento} />
                     <DataField label="Email" value={alumno.email} />
                     <DataField label="Telefono" value={alumno.telefono || "—"} />
-                    <DataField label="Etapa" value={alumno.curso} />
+                    <DataField label="Etapa" value={alumno.etapa} />
                     <DataField
                         label="Registrado"
                         value={new Date(alumno.createdAt).toLocaleDateString("es-AR", { day: "2-digit", month: "long", year: "numeric" })}
                     />
                 </div>
                 {/* Datos del tutor */}
-                <div style={{ background: "#18181c", border: "1px solid #2e2e38", borderRadius: 16, padding: 28, marginBottom: 20 }}>
-                    <h2 style={{ fontSize: 15, fontWeight: 700, color: "#f0eff4", marginBottom: 20, paddingBottom: 12, borderBottom: "1px solid #2e2e38" }}>
-                        👨‍👩‍👧 Datos del Padre / Madre / Tutor
-                    </h2>
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
-                        <DataField label="Nombre y apellido" value={alumno.tutorNombre || "—"} />
-                        <DataField label="DNI" value={alumno.tutorDni || "—"} />
-                        <DataField label="Relacion" value={alumno.tutorRelacion || "—"} />
-                        <DataField label="Celular" value={alumno.tutorCelular || "—"} />
-                        <DataField label="Direccion" value={alumno.tutorDireccion || "—"} />
-                        <DataField label="Ocupacion" value={alumno.tutorOcupacion || "—"} />
-                        <DataField label="Obra social" value={alumno.tutorObraSocial || "—"} />
+                {tutores.map(tutor => 
+                    <div style={{ background: "#18181c", border: "1px solid #2e2e38", borderRadius: 16, padding: 28, marginBottom: 20 }}>
+                        <h2 style={{ fontSize: 15, fontWeight: 700, color: "#f0eff4", marginBottom: 20, paddingBottom: 12, borderBottom: "1px solid #2e2e38" }}>
+                            👨‍👩‍👧 Datos del Padre / Madre / Tutor
+                        </h2>
+                        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+                            <DataField label="Nombre y apellido" value={tutor.nombre + " " + tutor.apellido || "—"} />
+                            <DataField label="DNI" value={tutor.dni || "—"} />
+                            <DataField label="Relacion" value={tutor.relacion || "—"} />
+                            <DataField label="Telefono" value={tutor.telefono || "—"} />
+                            <DataField label="Telefono alternativo" value={tutor.telefonoAlt || "—"} />
+                            <DataField label="Direccion" value={tutor.direccion || "—"} />
+                            <DataField label="Ocupacion" value={tutor.ocupacion || "—"} />
+                            <DataField label="Obra social" value={tutor.obraSocial || "—"} />
+                        </div>
                     </div>
-                </div>
+                )}
+                
             </div>
 
             {/* Ultima actualizacion */}

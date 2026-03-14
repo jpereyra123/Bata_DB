@@ -8,7 +8,7 @@ async function getStats() {
         prisma.alumno.count({ where: { estado: "INACTIVO" } }),
         prisma.alumno.count({ where: { estado: "PENDIENTE" } }),
         prisma.alumno.groupBy({
-            by: ["curso"],
+            by: ["etapa"],
             _count: { id: true },
             orderBy: { _count: { id: "desc" } },
         }),
@@ -76,9 +76,9 @@ export default async function DashboardPage() {
                         {stats.porEtapa.map((e) => {
                             const pct = stats.total > 0 ? Math.round((e._count.id / stats.total) * 100) : 0;
                             return (
-                                <div key={e.curso}>
+                                <div key={e.etapa}>
                                     <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
-                                        <span style={{ fontSize: 13, color: "#9b9aaa" }}>{e.curso || "Sin etapa"}</span>
+                                        <span style={{ fontSize: 13, color: "#9b9aaa" }}>{e.etapa || "Sin etapa"}</span>
                                         <span style={{ fontSize: 13, fontWeight: 600, color: "#f0eff4" }}>
                                             {e._count.id} <span style={{ color: "#5c5b6e", fontWeight: 400 }}>({pct}%)</span>
                                         </span>

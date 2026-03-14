@@ -19,8 +19,7 @@ export async function POST(req: NextRequest) {
     } catch {
         return NextResponse.json({ error: "Body invalido" }, { status: 400 });
     }
-
-    console.log("Body recibido:", body);
+    console.log("La data que me llegó del alumno: ", body);
 
     try {
         const existing = await alumnosService.findByEmail(body.email);

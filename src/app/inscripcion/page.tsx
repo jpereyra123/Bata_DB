@@ -21,6 +21,7 @@ export default function InscripcionPage() {
         dni: "",
         telefono: "",
         fechaNacimiento: "",
+        etapa: "",
         curso: "",
         tutorNombre: "",
         tutorDni: "",
@@ -171,7 +172,7 @@ export default function InscripcionPage() {
 
                             <div>
                                 <label style={labelStyle}>Etapa</label>
-                                <select style={{ ...inputStyle, cursor: "pointer" }} value={form.curso} onChange={(e) => setForm((f) => ({ ...f, curso: e.target.value }))} required>
+                                <select style={{ ...inputStyle, cursor: "pointer" }} value={form.etapa} onChange={(e) => setForm((f) => ({ ...f, curso: e.target.value }))} required>
                                     <option value="">Selecciona una etapa</option>
                                     {etapas.map((etapa) => (
                                         <option key={etapa} value={etapa}>{etapa}</option>

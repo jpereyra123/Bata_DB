@@ -30,25 +30,62 @@ model User {
 }
 
 model Alumno {
+  id               String       @id @default(uuid())
+  nombre           String
+  apellido         String       @default("")
+  email            String       @unique
+  dni              String       @unique
+  telefono         String       @default("")
+  fechaNacimiento  String
+  etapa            String
+  curso            String?
+  direccion        String
+  notas            String       @default("")
+  estado           EstadoAlumno @default(PENDIENTE)
+  fueBautizado     Boolean      @default(false)
+  tomoComunion     Boolean      @default(false)
+  tomoConfirmacion Boolean      @default(false)
+  alergias         String       @default("")
+  medicaciones     String       @default("")
+  condicionesMedicas String     @default("")
+  obraSocial       String       @default("")
+  numeroAfiliado   String       @default("")
+  tieneFichaMedica Boolean      @default(false)
+  fechaFichaMedica String       @default("")
+  seRetiraSolo     Boolean      @default(false)
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+  tutores AlumnoTutor[]
+
+  @@map("alumnos")
+}
+
+model Tutor {
   id              String       @id @default(uuid())
   nombre          String
   apellido        String       @default("")
-  email           String       @unique
-  dni             String       @default("")
+  dni             String       @unique
+  email           String?      @unique
   telefono        String       @default("")
-  fechaNacimiento String       @default("")
-  curso           String
+  telefonoAlt     String       @default("")
   notas           String       @default("")
-  estado          EstadoAlumno @default(PENDIENTE)
-  tutorNombre     String       @default("")
-  tutorDni        String       @default("")
-  tutorRelacion   String       @default("")
-  tutorCelular    String       @default("")
-  tutorDireccion  String       @default("")
-  tutorOcupacion  String       @default("")
-  tutorObraSocial String       @default("")
+  relacion        String       @default("")
+  direccion       String       @default("")
+  ocupacion       String       @default("")
+  obraSocial      String       @default("")
   createdAt       DateTime     @default(now())
   updatedAt       DateTime     @updatedAt
+  alumnos AlumnoTutor[]
+  @@map("tutores")
+}
 
-  @@map("alumnos")
+model AlumnoTutor {
+  alumnoId String
+  tutorId  String
+  loPuedeRetirar Boolean @default(false)
+
+  alumno   Alumno @relation(fields: [alumnoId], references: [id], onDelete: Cascade)
+  tutor    Tutor  @relation(fields: [tutorId], references: [id], onDelete: Cascade)
+
+  @@id([alumnoId, tutorId])
 }

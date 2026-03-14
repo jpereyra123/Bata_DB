@@ -24,3 +24,35 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+form {
+  /*background: #18181c; 
+  border: 1px solid #2e2e38;*/
+  border-radius: 12px; 
+  display: flex; 
+  flex-direction: column;
+  width: 100%;
+}
+
+input, select {
+  padding: 9px 12px;
+  background: #222228;
+  border: 1px solid #2e2e38;
+  border-radius: 8px;
+  color: #f0eff4;
+  font-size: 14px;
+  outline: none;
+  display: inline-block;
+  text-align: left;
+}
+
+label {
+  display: block;
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 6px;
+}
+
+button {
+  cursor: pointer;
+}

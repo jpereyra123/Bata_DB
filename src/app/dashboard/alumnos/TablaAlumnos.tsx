@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useState, useMemo } from "react";
 import * as XLSX from "xlsx";
+import { DateTime } from "next-auth/providers/kakao";
 
 interface Alumno {
   id: string;
@@ -13,7 +14,7 @@ interface Alumno {
   dni: string;
   telefono: string;
   fechaNacimiento: string;
-  curso: string;
+  etapa: string;
   estado: string;
 }
 
@@ -47,7 +48,7 @@ export default function TablaAlumnos({ alumnos }: { alumnos: Alumno[] }) {
         a.dni.includes(search) ||
         a.email.toLowerCase().includes(search.toLowerCase());
 
-      const matchEtapa = etapaFiltro === "Todas" || a.curso === etapaFiltro;
+      const matchEtapa = etapaFiltro === "Todas" || a.etapa === etapaFiltro;
       const matchEstado = estadoFiltro === "TODOS" || a.estado === estadoFiltro;
 
       return matchSearch && matchEtapa && matchEstado;
@@ -97,7 +98,7 @@ export default function TablaAlumnos({ alumnos }: { alumnos: Alumno[] }) {
       Email: a.email,
       Telefono: a.telefono,
       "Fecha Nac.": a.fechaNacimiento,
-      Etapa: a.curso,
+      Etapa: a.etapa,
       Estado: a.estado,
     }));
 
@@ -192,7 +193,7 @@ export default function TablaAlumnos({ alumnos }: { alumnos: Alumno[] }) {
                   <td style={{ padding: "12px 16px", borderBottom: "1px solid #2e2e38", color: "#9b9aaa" }}>{a.fechaNacimiento}</td>
                   <td style={{ padding: "12px 16px", borderBottom: "1px solid #2e2e38", color: "#9b9aaa" }}>{a.email}</td>
                   <td style={{ padding: "12px 16px", borderBottom: "1px solid #2e2e38", color: "#9b9aaa" }}>{a.telefono}</td>
-                  <td style={{ padding: "12px 16px", borderBottom: "1px solid #2e2e38", color: "#9b9aaa" }}>{a.curso}</td>
+                  <td style={{ padding: "12px 16px", borderBottom: "1px solid #2e2e38", color: "#9b9aaa" }}>{a.etapa}</td>
                   <td style={{ padding: "12px 16px", borderBottom: "1px solid #2e2e38" }}>
                     <span style={{ padding: "2px 10px", borderRadius: 99, fontSize: 12, fontWeight: 600, ...getBadgeStyle(a.estado) }}>
                       {a.estado}

@@ -9,16 +9,20 @@ const alumnoSelect = {
     dni: true,
     telefono: true,
     fechaNacimiento: true,
+    etapa: true,
     curso: true,
+    direccion: true,
     estado: true,
     notas: true,
-    tutorNombre: true,
-    tutorDni: true,
-    tutorRelacion: true,
-    tutorCelular: true,
-    tutorDireccion: true,
-    tutorOcupacion: true,
-    tutorObraSocial: true,
+    fueBautizado: true,
+    tomoComunion: true,
+    tomoConfirmacion: true,
+    alergias: true,
+    medicaciones: true,
+    condicionesMedicas: true,
+    obraSocial: true,
+    numeroAfiliado: true,
+    seRetiraSolo: true,
     createdAt: true,
     updatedAt: true,
 } satisfies Prisma.AlumnoSelect;
@@ -31,8 +35,34 @@ export const alumnosService = {
         });
     },
 
+    async findTutors(alumnoId: string) {
+    const alumno = await prisma.alumno.findUnique({
+        where: { id: alumnoId },
+        select: {
+        tutores: {
+            select: {
+            tutor: true
+            }
+        }
+        }
+    });
+
+    return alumno?.tutores.map(t => t.tutor) ?? [];
+    },
+
     async findById(id: string) {
-        return prisma.alumno.findUnique({ where: { id }, select: alumnoSelect });
+        return prisma.alumno.findUnique({
+            where: { id },
+            select: {
+                ...alumnoSelect,
+                tutores: {
+                    select: {
+                        loPuedeRetirar: true,
+                        tutor: true
+                    }
+                }
+            }
+        });
     },
 
     async findByEmail(email: string) {
@@ -40,14 +70,50 @@ export const alumnosService = {
     },
 
     async create(data: any) {
-        return prisma.alumno.create({ data, select: alumnoSelect });
+        const { tutores, ...alumno } = data;
+
+        return prisma.alumno.create({
+            data: {
+                ...alumno,
+                tutores: {
+                    create: tutores.map((t: any) => ({
+                        tutor: {
+                            create: t
+                        }
+                    }))
+                }
+            },
+            select: alumnoSelect
+        });
     },
 
     async update(id: string, data: any) {
-        return prisma.alumno.update({ where: { id }, data, select: alumnoSelect });
+        const { tutores, ...alumno } = data;
+
+        return prisma.alumno.update({
+            where: { id },
+            data: {
+                ...alumno,
+                tutores: {
+                    deleteMany: {},
+                    create: tutores.map((t: any) => ({
+                        tutor: {
+                            create: t
+                        }
+                    }))
+                }
+            },
+            select: alumnoSelect
+        });
     },
 
     async delete(id: string) {
-        return prisma.alumno.delete({ where: { id } });
-    },
+        await prisma.alumnoTutor.deleteMany({
+            where: { alumnoId: id }
+        });
+
+        return prisma.alumno.delete({
+            where: { id }
+        });
+    }
 };

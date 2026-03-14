@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { DateTime } from "next-auth/providers/kakao";
 
 const etapas = [
     "Pichones",
@@ -23,7 +24,8 @@ interface Alumno {
     dni: string;
     telefono: string;
     fechaNacimiento: string;
-    curso: string;
+    etapa: string,
+    curso: string | null;
     estado: string;
 }
 
@@ -36,6 +38,7 @@ export default function EditarAlumnoForm({ alumno }: { alumno: Alumno }) {
         dni: alumno.dni,
         telefono: alumno.telefono,
         fechaNacimiento: alumno.fechaNacimiento,
+        etapa: alumno.etapa,
         curso: alumno.curso,
         estado: alumno.estado,
     });
@@ -125,12 +128,20 @@ export default function EditarAlumnoForm({ alumno }: { alumno: Alumno }) {
 
                 <div>
                     <label style={labelStyle}>Fecha de nacimiento</label>
-                    <input type="date" style={inputStyle} value={form.fechaNacimiento} onChange={(e) => setForm((f) => ({ ...f, fechaNacimiento: e.target.value }))} required />
+                    <input
+                        type="date"
+                        style={inputStyle}
+                        value={form.fechaNacimiento}
+                        onChange={(e) =>
+                        setForm((f) => ({ ...f, fechaNacimiento: e.target.value }))
+                        }
+                        required
+                    />
                 </div>
 
                 <div>
                     <label style={labelStyle}>Etapa</label>
-                    <select style={{ ...inputStyle, cursor: "pointer" }} value={form.curso} onChange={(e) => setForm((f) => ({ ...f, curso: e.target.value }))} required>
+                    <select style={{ ...inputStyle, cursor: "pointer" }} value={form.etapa} onChange={(e) => setForm((f) => ({ ...f, curso: e.target.value }))} required>
                         <option value="">Selecciona una etapa</option>
                         {etapas.map((etapa) => (
                             <option key={etapa} value={etapa}>{etapa}</option>

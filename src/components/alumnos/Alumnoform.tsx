@@ -7,6 +7,7 @@ import Link from "next/link";
 interface FormData {
     nombre: string;
     email: string;
+    etapa: string;
     curso: string;
     estado: "ACTIVO" | "INACTIVO";
 }
@@ -23,6 +24,7 @@ export function AlumnoForm({ alumnoId, defaultValues }: Props) {
     const [form, setForm] = useState<FormData>({
         nombre: defaultValues?.nombre ?? "",
         email: defaultValues?.email ?? "",
+        etapa: defaultValues?.etapa ?? "",
         curso: defaultValues?.curso ?? "",
         estado: defaultValues?.estado ?? "ACTIVO",
     });

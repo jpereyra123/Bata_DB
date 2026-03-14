@@ -1,35 +1,44 @@
 "use client";
-
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-
-const etapas = [
-    "Pichones",
-    "Horneros",
-    "Cam/Ch",
-    "Pioneros/Fuegos",
-    "Rastr/Hog",
-    "Baq/Ant",
-    "Baq/Ant inst",
-    "Soles",
-];
+import DatosExplorador from "./pasosForm/DatosExplorador";
+import GrupoFamiliar from "./pasosForm/GrupoFamiliar/GrupoFamiliar";
+import Salud from "./pasosForm/Salud";
+import Autorizaciones from "./pasosForm/Autorizaciones";
+import { AlumnoData, TutorData } from "./types";
+import "./page.css"
 
 export default function NuevoAlumnoPage() {
     const router = useRouter();
-    const [form, setForm] = useState({
+    const [step, setStep] = useState(0)
+    const [form, setForm] = useState<AlumnoData>({
         nombre: "",
         apellido: "",
         email: "",
         dni: "",
+        direccion: "",
         telefono: "",
         fechaNacimiento: "",
+        etapa: "",
         curso: "",
         estado: "ACTIVO",
+        fueBautizado: false,
+        tomoComunion: false,
+        tomoConfirmacion: false,
+        alergias: "",
+        medicaciones: "",
+        condicionesMedicas: "",
+        obraSocial: "",
+        numeroAfiliado: "",
+        tieneFichaMedica: false,
+        fechaFichaMedica: "",
+        seRetiraSolo: false,
+        tutores: []
     });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
-
+    /*
     const inputStyle = {
         width: "100%",
         padding: "9px 12px",
@@ -46,16 +55,27 @@ export default function NuevoAlumnoPage() {
         color: "#888",
         marginBottom: 6,
     };
+    */
+    
+    const partesFormulario = [
+        <DatosExplorador data={form} setData={setForm} />,
+        <GrupoFamiliar data={form} setData={setForm} />,
+        <Salud data={form} setData={setForm} />,
+        <Autorizaciones data={form} setData={setForm} />
+    ];
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
         setError("");
         setLoading(true);
+        const formEnviar = {
+            ...form, tutores: form.tutores.map(({ id_tutor, ...resto }) => resto)
+        };
         try {
             const res = await fetch("/api/alumnos", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(form),
+                body: JSON.stringify(formEnviar),
             });
             const body = await res.json();
             if (!res.ok) {
@@ -72,7 +92,7 @@ export default function NuevoAlumnoPage() {
     }
 
     return (
-        <div style={{ maxWidth: 560 }}>
+        <div>
             <Link
                 href="/dashboard/alumnos"
                 style={{ fontSize: 13, color: "#9b9aaa", textDecoration: "none", display: "inline-block", marginBottom: 24 }}
@@ -87,11 +107,27 @@ export default function NuevoAlumnoPage() {
                 </div>
             )}
 
+            <form className="formContainer" onSubmit={handleSubmit}>
+                <div className="formNav">
+                    {["Datos explorador", "Grupo familiar", "Salud", "Autorizaciones"].map((titulo, i) => 
+                        <button key={i} className={step == i ? "active" : ""}  onClick={() => setStep(i)} type="button">{titulo}</button>
+                    )}
+                </div>
+                <div className="formContent">
+                    {partesFormulario[step]}
+                </div>
+                <div className="formActions">
+                    {step > 0 && <button className="Anterior" onClick={() => setStep(step - 1)} type="button">← Anterior</button>}
+                    {step < 3 && <button className="Siguiente" onClick={() => setStep(step + 1)} type="button">Siguiente →</button>}
+                    {step == 3 && <button className="Submit boton" type="submit">Enviar</button>}
+                </div>
+            </form>
+
+            {/*
             <form
                 onSubmit={handleSubmit}
                 style={{ background: "#18181c", border: "1px solid #2e2e38", borderRadius: 12, padding: 24, display: "flex", flexDirection: "column", gap: 18 }}
             >
-                {/* Nombre y Apellido */}
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
                     <div>
                         <label style={labelStyle}>Nombre</label>
@@ -115,7 +151,6 @@ export default function NuevoAlumnoPage() {
                     </div>
                 </div>
 
-                {/* DNI y Teléfono */}
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
                     <div>
                         <label style={labelStyle}>DNI</label>
@@ -138,7 +173,6 @@ export default function NuevoAlumnoPage() {
                     </div>
                 </div>
 
-                {/* Email */}
                 <div>
                     <label style={labelStyle}>Email</label>
                     <input
@@ -151,7 +185,6 @@ export default function NuevoAlumnoPage() {
                     />
                 </div>
 
-                {/* Fecha de nacimiento */}
                 <div>
                     <label style={labelStyle}>Fecha de nacimiento</label>
                     <input
@@ -163,7 +196,6 @@ export default function NuevoAlumnoPage() {
                     />
                 </div>
 
-                {/* Etapa */}
                 <div>
                     <label style={labelStyle}>Etapa</label>
                     <select
@@ -181,7 +213,6 @@ export default function NuevoAlumnoPage() {
                     </select>
                 </div>
 
-                {/* Estado */}
                 <div>
                     <label style={labelStyle}>Estado</label>
                     <select
@@ -210,6 +241,7 @@ export default function NuevoAlumnoPage() {
                     </Link>
                 </div>
             </form>
+            */}
         </div>
     );
 }
