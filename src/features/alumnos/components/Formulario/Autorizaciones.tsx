@@ -1,4 +1,4 @@
-import { AlumnoData } from "../types"
+import { AlumnoData } from "../../types"
 import Input from "@/components/Input/Input"
 
 interface StepProps {
@@ -10,7 +10,7 @@ export default function Autorizaciones({ data, setData }: StepProps) {
   return (
     <>
         <h1>AUTORIZACIONES</h1>
-        <Input field="seRetiraSolo" data={data} setData={setData} type="checkbox" />
+        <Input field="seRetiraSolo" data={data} setData={setData} type="checkbox" required={false} />
     </>
   )
 }

@@ -2,6 +2,8 @@
 import { SetStateAction } from "react";
 import { AlumnoData, TutorData } from "@/features/alumnos/types"
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime"
+import { tutoresService } from "./tutores.service";
+import { alumnoTutorService } from "./alumnoTutor.service";
 
 interface PropsSaveNotas {
     alumnoId: string
@@ -67,7 +69,10 @@ export const fichaAlumnosService = {
             const res = await fetch("/api/alumnos", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(dataAlumno),
+                body: JSON.stringify({
+                    alumno: dataAlumno,
+                    tutores: dataTutores
+                }),
             });
             const body = await res.json();
             if (!res.ok) {

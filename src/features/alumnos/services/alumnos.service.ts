@@ -81,10 +81,35 @@ export const alumnosService = {
     },
 
     async create(data: any) {
-        const {id, ...dataAlumno} = data
-        return prisma.alumno.create({
+        const { id, ...dataAlumno } = data.alumno;
+        const dataTutor = data.tutores.map(({id, activo, ...data}) => data);
+        return await prisma.$transaction(async (tx) => {
+        const alumno = await tx.alumno.create({
             data: dataAlumno,
-            select: alumnoSelect,
+            });
+
+            for (const tutor of dataTutor) {
+                const tutorCreado = await tx.tutor.upsert({
+                    where: { email: tutor.email }, // o dni u otro campo único
+                    update: {},
+                    create: tutor,
+                });
+
+                await tx.alumnoTutor.upsert({
+                    where: {
+                        alumnoId_tutorId: {
+                            alumnoId: alumno.id,
+                            tutorId: tutorCreado.id,
+                        },
+                    },
+                    update: {},
+                    create: {
+                        alumnoId: alumno.id,
+                        tutorId: tutorCreado.id,
+                    },
+                });
+                }
+            return alumno;
         });
     },
 

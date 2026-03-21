@@ -45,9 +45,9 @@ export default function DatosExplorador({ data, setData }: StepProps) {
         </select>
       </div>
       <Input field="telefono" data={data} setData={setData} placeholder="11 1234 5678" required={false} />
-      <Input field="fueBautizado" data={data} setData={setData} type="checkbox" />
-      <Input field="tomoComunion" data={data} setData={setData} type="checkbox" />
-      <Input field="tomoConfirmacion" data={data} setData={setData} type="checkbox" />
+      <Input field="fueBautizado" data={data} setData={setData} type="checkbox" required={false} />
+      <Input field="tomoComunion" data={data} setData={setData} type="checkbox" required={false} />
+      <Input field="tomoConfirmacion" data={data} setData={setData} type="checkbox" required={false} />
     </>
   )
 }

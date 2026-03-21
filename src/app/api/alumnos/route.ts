@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
     }
 
     try {
-        const existing = await alumnosService.findByEmail(body.email);
+        const existing = await alumnosService.findByEmail(body.alumno.email);
         if (existing) {
             return NextResponse.json({ error: "Ya existe un alumno con ese email" }, { status: 409 });
         }

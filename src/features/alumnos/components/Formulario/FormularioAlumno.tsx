@@ -71,7 +71,7 @@ export default function FormularioAlumno({ id, alumno }: Props) {
         
 
     let submit =
-    id == undefined ?
+    alumno == undefined ?
         (e: FormEvent) => fichaAlumnosService.handleSubmit({ e, router, setError, setLoading, dataAlumno, dataTutores }) :
         (e: FormEvent) => fichaAlumnosService.handleSubmitEdit({ e, router, setError, setLoading, dataAlumno, dataTutores });
 

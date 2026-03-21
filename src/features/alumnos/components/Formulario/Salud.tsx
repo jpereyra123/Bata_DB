@@ -15,7 +15,7 @@ export default function Salud({ data, setData }: StepProps) {
         <Input field="condicionesMedicas" classDiv="inputAncho" data={data} setData={setData}/>
         <Input field="obraSocial" data={data} setData={setData} required={false}/>
         <Input field="numeroAfiliado" data={data} setData={setData} required={false}/>
-        <Input field="tieneFichaMedica" data={data} setData={setData} type="checkbox" />
+        <Input field="tieneFichaMedica" data={data} setData={setData} type="checkbox" required={false}/>
     </>
   )
 }
