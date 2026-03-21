@@ -1,24 +1,45 @@
 "use client"
 import { useState } from "react"
-import { AlumnoData } from "../../types"
+import { TutorData } from "../../types"
 import FormFamiliar from "./FormFamiliar"
 
 interface StepProps {
-  data: AlumnoData
-  setData: React.Dispatch<React.SetStateAction<AlumnoData>>
+  data: TutorData[]
+  setData: React.Dispatch<React.SetStateAction<TutorData[]>>
 }
 
 export default function GrupoFamiliar({ data, setData }: StepProps) {
-  const [cantidadTutores, setCantidadTutores] = useState<number>(data.tutores.length);
-  const [idTutores, setIdTutores] = useState<number[]>(data.tutores.map(tutor => tutor.id_tutor));
+  const [cantidadTutores, setCantidadTutores] = useState<number>(data.length);
+  const [idTutores, setIdTutores] = useState<string[]>(data.map(tutor => tutor.id));
+
+  const tutorNuevo:TutorData = {
+    id: cantidadTutores.toString(),
+    nombre: "",
+    apellido: "",
+    dni: "",
+    email: "",
+    telefono: "",
+    telefonoAlt: "",
+    notas: "",
+    relacion: "",
+    direccion: "",
+    ocupacion: "",
+    obraSocial: "",
+    activo: true
+  }
+  console.log(data)
+
+
+
   return (
     <>
         <h1>GRUPO FAMILIAR</h1>
-        {idTutores.map(tutor => <FormFamiliar key={tutor} idTutores={idTutores} setIdTutores={setIdTutores} numeroTutor={tutor} data={data} setData={setData}/>)}
+        {data.map((tutor, indexTutor) => tutor.activo && <FormFamiliar key={tutor.id} tutor={tutor} data={data} setData={setData}/>)}
         <div className="inputAncho">
-          <button className="boton" onClick={(e) => {
-          setIdTutores([...idTutores, cantidadTutores]);
+        <button className="boton" onClick={(e) => {
+          e.preventDefault();
           setCantidadTutores(cantidadTutores + 1);
+          setData([...data, tutorNuevo]);
         }}>Agregar tutor</button>
         </div>
         

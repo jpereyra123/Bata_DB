@@ -53,7 +53,6 @@ export default function TablaAlumnos() {
         fetchData();
     }, [filters.search, filters.etapaFiltro, filters.estadoFiltro, page])
 
-    
     return (
         <>
             <ToolBar filters={filters} setFilters={setFilters} setPage={setPage} />

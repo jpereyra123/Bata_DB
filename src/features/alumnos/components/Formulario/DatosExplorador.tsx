@@ -1,4 +1,4 @@
-import { AlumnoData } from "../types"
+import { AlumnoData } from "../../types"
 import Input from "@/components/Input/Input"
 
 interface StepProps {
@@ -33,7 +33,7 @@ export default function DatosExplorador({ data, setData }: StepProps) {
         <select
           id="etapa"
           value={data.etapa}
-          onChange={(e) => setData((f) => ({ ...f, etapa: e.target.value }))}
+          onChange={(e) => setData((f:AlumnoData) => ({ ...f, etapa: e.target.value }))}
           required
       >
           <option value="">Seleccioná una etapa</option>

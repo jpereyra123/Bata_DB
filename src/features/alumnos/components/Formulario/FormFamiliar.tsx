@@ -4,65 +4,48 @@ import { AlumnoData, TutorData } from "../../types"
 import { useEffect, useState } from "react"
 
 interface StepProps {
-    numeroTutor: number
-    idTutores: number[]
-    setIdTutores: React.Dispatch<React.SetStateAction<number[]>>
-    data: AlumnoData
-    setData: React.Dispatch<React.SetStateAction<AlumnoData>>
+    tutor: TutorData
+    data: TutorData[]
+    setData: React.Dispatch<React.SetStateAction<TutorData[]>>
 }
 
-export default function FormFamiliar({ numeroTutor, idTutores, setIdTutores, data, setData }: StepProps) {
-    const tutorInicial = data.tutores.find(tutor => tutor.id_tutor == numeroTutor);
-    const [tutor, setTutor] = useState(tutorInicial ?? {
-        id_tutor: numeroTutor,
-        nombre: "",
-        apellido: "",
-        dni: "",
-        email: "",
-        telefono: "",
-        telefonoAlt: "",
-        notas: "",
-        relacion: "",
-        direccion: "",
-        ocupacion: "",
-        obraSocial: ""
-    })
+export default function FormFamiliar({ tutor, data, setData }: StepProps) {
 
     useEffect(() => {
-        setData(prev => {
-            const otros = prev.tutores.filter(t => t.id_tutor !== numeroTutor);
-
-            return {
-                ...prev,
-                tutores: [...otros, tutor]
-            };
-        });
-    }, [tutor, numeroTutor, setData]);
+        setData(tutores =>
+            tutores.map((t, i) =>
+                t.id === tutor.id ? tutor : t
+            )
+        );
+    }, [tutor]);
     
 
     function eliminarTutor() {
-        setData(prev => ({
-            ...prev,
-            tutores: prev.tutores.filter(t => t.id_tutor !== numeroTutor)
-        }));
-        setIdTutores(prev => prev.filter(id => id !== numeroTutor));
+        setData(data.filter(t => t.id != tutor.id));
     }
 
+    function setTutor(tutor: TutorData) {
+        setData(tutores =>
+            tutores.map((t, i) =>
+                t.id == tutor.id ? tutor : t
+            )
+        );
+    }
     
 
     return (
         <>
-            <h2>Tutor {numeroTutor + 1}</h2>
-            <Input field="nombre" id={"nombre" + numeroTutor} data={tutor} setData={setTutor} placeholder="Juan" />
-            <Input field="apellido" id={"apellido" + numeroTutor} data={tutor} setData={setTutor} placeholder="García" />
-            <Input field="dni" id={"dni" + numeroTutor}  data={tutor} setData={setTutor} placeholder="12345678" />
-            <Input field="email" id={"email" + numeroTutor} data={tutor} setData={setTutor} placeholder="Juan"  required={false}/>
-            <Input field="telefono" id={"telefono" + numeroTutor}  data={tutor} setData={setTutor} placeholder="11 1234 5678" />
-            <Input field="telefonoAlt" id={"telefonoAlt" + numeroTutor}  data={tutor} setData={setTutor} placeholder="11 1234 5678" required={false} />
-            <Input field="relacion" id={"relacion" + numeroTutor}  data={tutor} setData={setTutor} placeholder="padre/madre" />
-            <Input field="direccion" id={"direccion" + numeroTutor}  data={tutor} setData={setTutor} placeholder="Calle 1234" />
-            <Input field="ocupacion" id={"ocupacion" + numeroTutor}  data={tutor} setData={setTutor} placeholder="Profesor/a" />
-            <Input field="obraSocial" id={"obraSocial" + numeroTutor}  data={tutor} setData={setTutor} placeholder="Obra social" />
+            <h2>Tutor {tutor.id}</h2>
+            <Input field="nombre" id={"nombre" + tutor.id} data={tutor} setData={setTutor} placeholder="Juan" />
+            <Input field="apellido" id={"apellido" + tutor.id} data={tutor} setData={setTutor} placeholder="García" />
+            <Input field="dni" id={"dni" + tutor.id}  data={tutor} setData={setTutor} placeholder="12345678" />
+            <Input field="email" id={"email" + tutor.id} data={tutor} setData={setTutor} placeholder="Juan"  required={false}/>
+            <Input field="telefono" id={"telefono" + tutor.id}  data={tutor} setData={setTutor} placeholder="11 1234 5678" />
+            <Input field="telefonoAlt" id={"telefonoAlt" + tutor.id}  data={tutor} setData={setTutor} placeholder="11 1234 5678" required={false} />
+            <Input field="relacion" id={"relacion" + tutor.id}  data={tutor} setData={setTutor} placeholder="padre/madre" />
+            <Input field="direccion" id={"direccion" + tutor.id}  data={tutor} setData={setTutor} placeholder="Calle 1234" />
+            <Input field="ocupacion" id={"ocupacion" + tutor.id}  data={tutor} setData={setTutor} placeholder="Profesor/a" />
+            <Input field="obraSocial" id={"obraSocial" + tutor.id}  data={tutor} setData={setTutor} placeholder="Obra social" />
             <button className="boton botonEliminar" onClick={eliminarTutor}>Eliminar tutor</button>
         </>
     )

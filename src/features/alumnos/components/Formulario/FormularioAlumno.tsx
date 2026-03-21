@@ -13,21 +13,22 @@ import { fichaAlumnosService } from "../../services/fichaAlumnos.service";
 interface Props {
     id?: string;
     alumno?: AlumnoData;
-    tutores?: TutorData;
 }
 
-export default function FormularioAlumno({ id, alumno, tutores }: Props) {
+export default function FormularioAlumno({ id, alumno }: Props) {
     const alumnoVacio = {
+        id: "",
+        etapa: "",
+        estado: EstadoAlumno.ACTIVO,
+        email: "",
         nombre: "",
         apellido: "",
-        email: "",
         dni: "",
-        direccion: "",
         telefono: "",
         fechaNacimiento: "",
-        etapa: "",
-        curso: "",
-        estado: EstadoAlumno.ACTIVO,
+        curso: "" ,
+        direccion: "",
+        notas: "",
         fueBautizado: false,
         tomoComunion: false,
         tomoConfirmacion: false,
@@ -43,21 +44,36 @@ export default function FormularioAlumno({ id, alumno, tutores }: Props) {
     
     const router = useRouter();
     const [step, setStep] = useState(0)
-    const [form, setForm] = useState({dataAlumno: alumno ?? alumnoVacio, dataTutores: tutores ?? []});
+    const [dataAlumno, setDataAlumno] = useState(alumno ?? alumnoVacio);
+    const [dataTutores, setDataTutores] = useState<TutorData[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     
-    const partesFormulario = [
-        <DatosExplorador data={form} setData={setForm} />,
-        <GrupoFamiliar data={form} setData={setForm} />,
-        <Salud data={form} setData={setForm} />,
-        <Autorizaciones data={form} setData={setForm} />
-    ];
+    let partesFormulario;
+    let navOptions;
+    if (alumno == undefined) {
+        navOptions = ["Datos explorador", "Grupo familiar", "Salud", "Autorizaciones"];
+        partesFormulario = [
+            <DatosExplorador data={dataAlumno} setData={setDataAlumno} />,
+            <GrupoFamiliar data={dataTutores} setData={setDataTutores} />,
+            <Salud data={dataAlumno} setData={setDataAlumno} />,
+            <Autorizaciones data={dataAlumno} setData={setDataAlumno} />
+        ];
+    }
+    else {
+        navOptions = ["Datos explorador", "Salud", "Autorizaciones"];
+        partesFormulario = [
+            <DatosExplorador data={dataAlumno} setData={setDataAlumno} />,
+            <Salud data={dataAlumno} setData={setDataAlumno} />,
+            <Autorizaciones data={dataAlumno} setData={setDataAlumno} />
+        ];
+    }
+        
 
     let submit =
     id == undefined ?
-        (e: FormEvent) => fichaAlumnosService.handleSubmit({ e, router, setError, setLoading, form }) :
-        (e: FormEvent) => fichaAlumnosService.handleSubmitEdit({ e, router, setError, setLoading, form, id });
+        (e: FormEvent) => fichaAlumnosService.handleSubmit({ e, router, setError, setLoading, dataAlumno, dataTutores }) :
+        (e: FormEvent) => fichaAlumnosService.handleSubmitEdit({ e, router, setError, setLoading, dataAlumno, dataTutores });
 
     return (
         <div>
@@ -67,7 +83,7 @@ export default function FormularioAlumno({ id, alumno, tutores }: Props) {
             >
                 ← Volver
             </Link>
-            <h1 style={{ fontSize: 24, marginBottom: 24 }}>{data == undefined? "Nuevo" : "Editar"} alumno</h1>
+            <h1 style={{ fontSize: 24, marginBottom: 24 }}>{alumno == undefined? "Nuevo" : "Editar"} alumno</h1>
 
             {error && (
                 <div style={{ background: "rgba(239,68,68,0.12)", border: "1px solid rgba(239,68,68,0.25)", borderRadius: 8, padding: "10px 14px", color: "#ef4444", fontSize: 13, marginBottom: 20 }}>
@@ -77,7 +93,7 @@ export default function FormularioAlumno({ id, alumno, tutores }: Props) {
 
             <form className="formContainer" onSubmit={submit}>
                 <div className="formNav">
-                    {["Datos explorador", "Grupo familiar", "Salud", "Autorizaciones"].map((titulo, i) => 
+                    {navOptions.map((titulo, i) => 
                         <button key={i} className={step == i ? "active" : ""}  onClick={() => setStep(i)} type="button">{titulo}</button>
                     )}
                 </div>
@@ -86,8 +102,8 @@ export default function FormularioAlumno({ id, alumno, tutores }: Props) {
                 </div>
                 <div className="formActions">
                     {step > 0 && <button className="Anterior" onClick={() => setStep(step - 1)} type="button">← Anterior</button>}
-                    {step < 3 && <button className="Siguiente" onClick={() => setStep(step + 1)} type="button">Siguiente →</button>}
-                    {step == 3 && <button className="Submit boton" type="submit">Enviar</button>}
+                    {step < navOptions.length - 1 && <button className="Siguiente" onClick={() => setStep(step + 1)} type="button">Siguiente →</button>}
+                    {step == navOptions.length - 1 && <button className="Submit boton" type="submit">Enviar</button>}
                 </div>
             </form>
         </div>

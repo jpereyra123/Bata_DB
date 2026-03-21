@@ -1,6 +1,6 @@
 "use client";
 import { SetStateAction } from "react";
-import { AlumnoData } from "@/features/alumnos/types"
+import { AlumnoData, TutorData } from "@/features/alumnos/types"
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime"
 
 interface PropsSaveNotas {
@@ -16,18 +16,9 @@ type PropsSubmit = {
     setError: any
     router: AppRouterInstance
     setLoading: any
-    form: AlumnoData
+    dataAlumno: AlumnoData
+    dataTutores: TutorData[]
 }
-
-type PropsSubmitEdit = {
-    e: React.FormEvent
-    setError: any
-    router: AppRouterInstance
-    setLoading: any
-    form: AlumnoData
-    id: string
-}
-
 export const fichaAlumnosService = {
     async handleDelete(alumnoId : string, router: AppRouterInstance) {
         if (!confirm("Eliminar este alumno? Esta accion no se puede deshacer.")) return;
@@ -68,18 +59,15 @@ export const fichaAlumnosService = {
             setSavingNotas(false);
         }
     },
-    async handleSubmit({e, router, setError, setLoading, form} : PropsSubmit) {
+    async handleSubmit({e, router, setError, setLoading, dataAlumno, dataTutores} : PropsSubmit) {
         e.preventDefault();
         setError("");
         setLoading(true);
-        const formEnviar = {
-            ...form, tutores: form.tutores.map(({ id_tutor, ...resto }) => resto)
-        };
         try {
             const res = await fetch("/api/alumnos", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(formEnviar),
+                body: JSON.stringify(dataAlumno),
             });
             const body = await res.json();
             if (!res.ok) {
@@ -94,15 +82,15 @@ export const fichaAlumnosService = {
             setLoading(false);
         }
     },
-    async handleSubmitEdit({e, router, setError, setLoading, form, id} : PropsSubmitEdit) {
+    async handleSubmitEdit({e, router, setError, setLoading, dataAlumno, dataTutores } : PropsSubmit) {
         e.preventDefault();
         setError("");
         setLoading(true);
         try {
-            const res = await fetch(`/api/alumnos/${id}`, {
+            const res = await fetch(`/api/alumnos/${dataAlumno.id}`, {
                 method: "PATCH",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(form),
+                body: JSON.stringify(dataAlumno),
             });
             const body = await res.json();
             if (!res.ok) {

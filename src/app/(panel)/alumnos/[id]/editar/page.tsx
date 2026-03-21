@@ -3,7 +3,8 @@ import { alumnosService } from "@/features/alumnos/services/alumnos.service";
 import { notFound } from "next/navigation";
 import EditarAlumnoForm from "../../../../../features/alumnosViejo/[id]/editar/EditarAlumnoForm";
 import FormularioAlumno from "@/features/alumnos/components/Formulario/FormularioAlumno";
-import crearAlumnoData from "@/features/alumnos/services/crearAlumnoData";
+import { AlumnoData } from "@/features/alumnos/types";
+import { alumnoTutorService } from "@/features/alumnos/services/alumnoTutor.service";
 
 interface Props {
     params: Promise<{ id: string }>;
@@ -11,10 +12,11 @@ interface Props {
 
 export default async function EditarAlumnoPage({ params }: Props) {
     const { id } = await params;
-    const alumnoData = await crearAlumnoData(id);
+    console.log("idAlumno:", id);
+    const alumnoData = await alumnosService.findById(id)
     if (!alumnoData) notFound();
     
     return (
-        <FormularioAlumno id={id} data={alumnoData} />
+        <FormularioAlumno id={id} alumno={alumnoData} />
     );
 }

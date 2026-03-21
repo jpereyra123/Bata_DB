@@ -1,9 +1,9 @@
-import { AlumnoData, TutorData } from "@/app/(panel)/alumnos/nuevo/types"
+import { AlumnoData, TutorData } from "@/features/alumnos/types";
 
 interface InputProps<T> {
     field: keyof T
     data: T
-    setData: React.Dispatch<React.SetStateAction<T>>
+    setData: any
     id?: string
     type?: string
     placeholder?: string

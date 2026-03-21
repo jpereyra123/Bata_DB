@@ -8,6 +8,7 @@ import FichaHeader from "@/features/alumnos/components/Ficha/FichaHeader";
 import NotasInternas from "@/features/alumnos/components/Ficha/NotasInternas";
 import DatosAlumnos from "@/features/alumnos/components/Ficha/DatosAlumnos";
 import DatosTutores from "@/features/alumnos/components/Ficha/DatosTutores";
+import { alumnoTutorService } from "../../services/alumnoTutor.service";
 
 interface Props {
     params: Promise<{ id: string }>;
@@ -19,6 +20,8 @@ export default async function FichaAlumno({ params }: Props) {
     const { id } = await params;
     const alumno = await alumnosService.findById(id);
     if (!alumno) notFound();
+    const tutoresAlumno = await alumnoTutorService.getByAlumno(id);
+    const tutores = tutoresAlumno.map(tutorAlumno => tutorAlumno.tutor);
 
     return (
         <div style={{ maxWidth: 640 }}>
@@ -30,12 +33,14 @@ export default async function FichaAlumno({ params }: Props) {
                 <FichaHeader alumno={alumno} />
                 <NotasInternas alumnoId={alumno.id} notas={alumno.notas} />
                 <DatosAlumnos alumno={alumno} />
-                <DatosTutores tutores={alumno.tutores.map(tutorXAlumno => tutorXAlumno.tutor)} />
+                <DatosTutores tutores={tutores} />
             </div>
 
+            {/* 
             <p style={{ fontSize: 12, color: "#5c5b6e", textAlign: "right" }}>
                 Ultima actualizacion: {new Date(alumno.updatedAt).toLocaleDateString("es-AR", { day: "2-digit", month: "long", year: "numeric" })}
             </p>
+            */}
         </div>
     );
 }

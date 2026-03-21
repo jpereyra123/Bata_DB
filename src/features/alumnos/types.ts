@@ -1,43 +1,45 @@
 import { EstadoAlumno, Tutor } from "@prisma/client";
 
 export interface TutorData {
-    id_tutor: number;
+    id: string;
+    email: string | null;
     nombre: string;
     apellido: string;
     dni: string;
-    email: string | null;
     telefono: string;
-    telefonoAlt: string;
-    notas?: string;
-    relacion: string;
     direccion: string;
-    ocupacion: string;
+    notas: string;
     obraSocial: string;
+    telefonoAlt: string;
+    relacion: string;
+    ocupacion: string;
+    activo: boolean;
 }
 
 export interface AlumnoData {
-    nombre: string,
-    apellido: string,
-    email: string,
-    dni: string,
-    direccion: string,
-    telefono: string,
-    fechaNacimiento: string,
-    etapa: string,
-    curso: string | null,
-    estado: EstadoAlumno,
-    fueBautizado: boolean,
-    tomoComunion: boolean,
-    tomoConfirmacion: boolean,
-    alergias: string,
-    medicaciones: string,
-    condicionesMedicas: string,
-    obraSocial: string,
-    numeroAfiliado: string,
-    tieneFichaMedica: boolean,
-    fechaFichaMedica: string,
-    seRetiraSolo: boolean,
-    tutores: TutorData[]
+    id: string;
+    etapa: string;
+    estado: EstadoAlumno;
+    email: string;
+    nombre: string;
+    apellido: string;
+    dni: string;
+    telefono: string;
+    fechaNacimiento: string;
+    curso: string | null;
+    direccion: string;
+    notas: string;
+    fueBautizado: boolean;
+    tomoComunion: boolean;
+    tomoConfirmacion: boolean;
+    alergias: string;
+    medicaciones: string;
+    condicionesMedicas: string;
+    obraSocial: string;
+    numeroAfiliado: string;
+    tieneFichaMedica: boolean;
+    fechaFichaMedica: string;
+    seRetiraSolo: boolean;
 }
 
 export type Alumno = {
