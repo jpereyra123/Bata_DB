@@ -83,7 +83,7 @@ export const alumnosService = {
 
     async create(data: any) {
         const { id, ...dataAlumno } = data.alumno;
-        const dataTutor = data.tutores.map(({id, activo, ...data}) => data);
+        const dataTutor = data.tutores.map(({id, activo, ...data}:{id:any, activo:any}) => data);
         return await prisma.$transaction(async (tx) => {
         const alumno = await tx.alumno.create({
             data: dataAlumno,
