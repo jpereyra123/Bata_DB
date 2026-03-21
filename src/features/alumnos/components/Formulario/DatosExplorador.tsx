@@ -32,10 +32,40 @@ export default function DatosExplorador({ data, setData }: StepProps) {
         <label htmlFor="etapa">Etapa</label>
         <select
           id="etapa"
+          value={data.comoConocieron}
+          onChange={(e) => setData((f:AlumnoData) => ({ ...f, comoConocieron: e.target.value }))}
+          required
+      >
+          <option value="">¿Cómo conocieron el Batallón?</option>
+          <option value={"conocido/familiar"}>
+              Por un conocido/familiar
+          </option>
+          <option value={"redes"}>
+              Por redes sociales
+          </option>
+          <option value={"campaña"}>
+              Por folleto/campaña
+          </option>
+          <option value={"colegio"}>
+              Por el colegio
+          </option>
+          <option value={"otro"}>
+              Otro
+          </option>
+        </select>
+      </div>
+      <Input field="telefono" data={data} setData={setData} placeholder="11 1234 5678" required={false} />
+      <Input field="fueBautizado" data={data} setData={setData} type="checkbox" required={false} />
+      <Input field="tomoComunion" data={data} setData={setData} type="checkbox" required={false} />
+      <Input field="tomoConfirmacion" data={data} setData={setData} type="checkbox" required={false} />
+      <div>
+        <label htmlFor="etapa">Etapa</label>
+        <select
+          id="etapa"
           value={data.etapa}
           onChange={(e) => setData((f:AlumnoData) => ({ ...f, etapa: e.target.value }))}
           required
-      >
+        >
           <option value="">Seleccioná una etapa</option>
           {etapas.map((etapa) => (
               <option key={etapa} value={etapa}>
@@ -44,10 +74,6 @@ export default function DatosExplorador({ data, setData }: StepProps) {
           ))}
         </select>
       </div>
-      <Input field="telefono" data={data} setData={setData} placeholder="11 1234 5678" required={false} />
-      <Input field="fueBautizado" data={data} setData={setData} type="checkbox" required={false} />
-      <Input field="tomoComunion" data={data} setData={setData} type="checkbox" required={false} />
-      <Input field="tomoConfirmacion" data={data} setData={setData} type="checkbox" required={false} />
     </>
   )
 }

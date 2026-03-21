@@ -25,6 +25,7 @@ export interface AlumnoData {
     apellido: string;
     dni: string;
     telefono: string;
+    comoConocieron: string;
     fechaNacimiento: string;
     curso: string | null;
     direccion: string;

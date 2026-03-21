@@ -37,6 +37,7 @@ model Alumno {
   dni              String       @unique
   telefono         String       @default("")
   fechaNacimiento  String
+  comoConocieron   String       @default("")
   etapa            String
   curso            String?
   direccion        String

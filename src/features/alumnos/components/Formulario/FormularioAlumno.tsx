@@ -24,6 +24,7 @@ export default function FormularioAlumno({ id, alumno }: Props) {
         nombre: "",
         apellido: "",
         dni: "",
+        comoConocieron: "",
         telefono: "",
         fechaNacimiento: "",
         curso: "" ,

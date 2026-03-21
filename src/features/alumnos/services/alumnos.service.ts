@@ -17,6 +17,7 @@ const alumnoSelect = {
     fueBautizado: true,
     tomoComunion: true,
     tomoConfirmacion: true,
+    comoConocieron: true,
     alergias: true,
     medicaciones: true,
     condicionesMedicas: true,

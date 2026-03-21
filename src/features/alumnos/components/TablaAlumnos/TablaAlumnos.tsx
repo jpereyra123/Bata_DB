@@ -5,6 +5,7 @@ import ToolBar from "./ToolBar";
 import { etapas, Alumno } from "../../types";
 import Link from "next/link";
 import FilaAlumno from "./FilaAlumno";
+import { log } from "console";
 
 export default function TablaAlumnos() {
     const [alumnos, setAlumnos] = useState<Alumno[]>([]);
@@ -53,6 +54,7 @@ export default function TablaAlumnos() {
         fetchData();
     }, [filters.search, filters.etapaFiltro, filters.estadoFiltro, page])
 
+    console.log(alumnos);
     return (
         <>
             <ToolBar filters={filters} setFilters={setFilters} setPage={setPage} />
