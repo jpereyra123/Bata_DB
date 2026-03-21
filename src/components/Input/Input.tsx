@@ -1,4 +1,4 @@
-import { AlumnoData, TutorData } from "@/app/dashboard/alumnos/nuevo/types"
+import { AlumnoData, TutorData } from "@/app/(panel)/alumnos/nuevo/types"
 
 interface InputProps<T> {
     field: keyof T

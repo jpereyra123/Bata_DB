@@ -83,7 +83,7 @@ export function AlumnosTable({ alumnos }: { alumnos: AlumnoRow[] }) {
                                 </td>
                                 <td style={{ padding: "12px 16px", borderBottom: "1px solid #2e2e38" }}>
                                     <div style={{ display: "flex", gap: 8 }}>
-                                        <Link href={`/dashboard/alumnos/${alumno.id}/editar`} style={{ padding: "5px 12px", borderRadius: 6, border: "1px solid #2e2e38", color: "#9b9aaa", textDecoration: "none", fontSize: 13 }}>
+                                        <Link href={`/alumnos/${alumno.id}/editar`} style={{ padding: "5px 12px", borderRadius: 6, border: "1px solid #2e2e38", color: "#9b9aaa", textDecoration: "none", fontSize: 13 }}>
                                             Editar
                                         </Link>
                                         <button

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { alumnosService } from "../../../../services/alumnos.service";
+import { alumnosService } from "../../../../features/alumnos/services/alumnos.service";
 
 export const runtime = "nodejs";
 

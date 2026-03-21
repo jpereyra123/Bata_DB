@@ -46,7 +46,7 @@ export function AlumnoForm({ alumnoId, defaultValues }: Props) {
             );
             const body = await res.json();
             if (!res.ok) { setServerError(body.error ?? "Error inesperado"); return; }
-            router.push("/dashboard/alumnos");
+            router.push("/alumnos");
             router.refresh();
         } catch {
             setServerError("Error de conexión");
@@ -60,7 +60,7 @@ export function AlumnoForm({ alumnoId, defaultValues }: Props) {
 
     return (
         <div style={{ maxWidth: 520 }}>
-            <Link href="/dashboard/alumnos" style={{ fontSize: 13, color: "#9b9aaa", textDecoration: "none", display: "inline-block", marginBottom: 24 }}>
+            <Link href="/alumnos" style={{ fontSize: 13, color: "#9b9aaa", textDecoration: "none", display: "inline-block", marginBottom: 24 }}>
                 ← Volver
             </Link>
             <h1 style={{ fontSize: 24, marginBottom: 24 }}>{isEditing ? "Editar alumno" : "Nuevo alumno"}</h1>
@@ -95,7 +95,7 @@ export function AlumnoForm({ alumnoId, defaultValues }: Props) {
                     <button type="submit" disabled={loading} style={{ padding: "10px 20px", background: "#f5a623", borderRadius: 8, border: "none", color: "#000", fontWeight: 700, fontSize: 14, cursor: "pointer" }}>
                         {loading ? "Guardando..." : isEditing ? "Guardar cambios" : "Crear alumno"}
                     </button>
-                    <Link href="/dashboard/alumnos" style={{ padding: "10px 20px", borderRadius: 8, border: "1px solid #2e2e38", color: "#9b9aaa", textDecoration: "none", fontSize: 14 }}>
+                    <Link href="/alumnos" style={{ padding: "10px 20px", borderRadius: 8, border: "1px solid #2e2e38", color: "#9b9aaa", textDecoration: "none", fontSize: 14 }}>
                         Cancelar
                     </Link>
                 </div>
