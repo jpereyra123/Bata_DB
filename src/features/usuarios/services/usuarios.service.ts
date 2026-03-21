@@ -1,5 +1,11 @@
 import { SetStateAction } from "react";
-import { Usuario } from "./types";
+
+export interface Usuario {
+    id: string;
+    email: string;
+    role: string;
+    createdAt: string;
+}
 
 interface PropsFetchUsuarios {
     setUsuarios : React.Dispatch<SetStateAction<Usuario[]>>

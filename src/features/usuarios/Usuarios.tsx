@@ -1,7 +1,13 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Usuario } from "./types";
 import { usuariosService } from "./services/usuarios.service";
+
+export interface Usuario {
+    id: string;
+    email: string;
+    role: string;
+    createdAt: string;
+}
 
 export default function Usuarios() {
     const [usuarios, setUsuarios] = useState<Usuario[]>([]);
